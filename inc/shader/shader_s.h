@@ -39,6 +39,7 @@ public:
             // read file's buffer contents into streams
             vShaderStream << vShaderFile.rdbuf();
             fShaderStream << fShaderFile.rdbuf();
+            std::cout << vShaderStream.str() << std::endl;
             // close file handlers
             vShaderFile.close();
             fShaderFile.close();
@@ -76,10 +77,11 @@ public:
     }
     // activate the shader
     // ------------------------------------------------------------------------
-    void use()
+    void use() const
     {
         glUseProgram(ID);
     }
+    // 注意下面这几个函数一定要在use之后才能是使用，只有激活了对应的程序更改uniform值才能生效
     // utility uniform functions
     // ------------------------------------------------------------------------
     void setBool(const std::string &name, bool value) const
@@ -94,6 +96,8 @@ public:
     // ------------------------------------------------------------------------
     void setFloat(const std::string &name, float value) const
     {
+        // glGetUniformLocation获取对应uniform的location的名字
+//        std::cout << name.c_str() << "ID" <<ID << std::endl;
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
